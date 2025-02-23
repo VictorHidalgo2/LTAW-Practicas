@@ -1,59 +1,89 @@
-/* Estilos generales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f4f4f4;
 }
 
-/* Centrar el contenedor principal */
-.cuerpo {
-    width: 80%;
-    max-width: 900px;
-    background: white;
+header {
+    background-color: #696969;
+    text-align: center;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border-radius: 10px;
 }
 
-/* Diseño en tres columnas centradas para productos */
+.contenedor {
+    max-width: 2200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Productos en 3 columnas */
 .productos {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.producto {
+    /* background: #f9f9f9;*/
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
+    transition: transform 0.3s ease;
+    background: none;
 }
 
-.productos p {
-    font-weight: bold;
-    width: 100%;
-}
-
-.productos button {
+button {
     border: none;
     background: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
 }
 
-.productos img {
-    width: 200px;
-    height: auto;
+/* Ajustar imágenes de productos proporcionalmente */
+button a img {
+    width: 300px;   /* Ancho fijo */
+    height: 350px;  /* Alto fijo para uniformidad */
+    object-fit: scale-down;  /* Mantiene la proporción y recorta si es necesario */
     border-radius: 10px;
     transition: transform 0.3s ease;
 }
 
-.productos img:hover {
+button a img:hover {
     transform: scale(1.1);
+}
+
+/* Footer en 2 columnas */
+footer {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.info, .contacto {
+    width: 45%;
+}
+
+.info h2, .contacto h2 {
+    border-bottom: 2px solid white;
+    padding-bottom: 5px;
+}
+
+/* Logo centrado debajo de las secciones */
+.footer-logo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-logo img {
+    width: 200px; /* Puedes ajustar el tamaño */
 }
