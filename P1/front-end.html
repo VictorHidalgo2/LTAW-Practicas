@@ -6,13 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUPERFUNKO store</title>
     <!-- Hoja de estilo --> 
-    <link rel="icon" type="image/png" href="loguito.png" sizes="64x64">
-    <link rel="stylesheet" href="front-end.css"> 
+    <link rel="icon" type="image/png" href="loguito.png" sizes="64x64" onerror="handleError()">
+    <link rel="stylesheet" href="front-end.css" onerror="handleError()"> 
+    
+<script>
+    function handleError(event) {
+        let resource = event.target.src || event.target.href || 'desconocido';
+        window.location.href = 'error.html?resource=' + encodeURIComponent(resource);
+    }
+
+    window.addEventListener('error', function(event) {
+        if (event.target.tagName === 'IMG' || event.target.tagName === 'LINK' || event.target.tagName === 'SCRIPT') {
+            handleError(event);
+        }
+    }, true);
+</script>
+
+    
 </head>
 
 <body>
     <header>
-        <img src="logo.png" width="600px">
+        <img src="logo.png" width="600px" onerror="handleError()">
     </header>
     
     <div class="contenedor">
@@ -21,15 +36,15 @@
         <div class="productos">
             <div>
                 <div class="starwars">Darth Vader vs Luke Skywalker</div>
-                <button><a href="producto1.html"><img src="producto1.png" alt="PRODUCTO1"></a></button>
+                <button><a href="producto1.html"><img src="producto1.png" alt="PRODUCTO1" onerror="handleError()"></a></button>
             </div>
             <div>
                 <div class="lotr">Gandalf</div>
-                <button><a href="producto2.html"><img src="producto2.png" alt="PRODUCTO2"></a></button>
+                <button><a href="producto2.html"><img src="producto2.png" alt="PRODUCTO2" onerror="handleError()"></a></button>
             </div>
             <div>
                 <div class="avenger">Iron Man</div>
-                <button><a href="producto3.html"><img src="producto3.png" alt="PRODUCTO3"></a></button>
+                <button><a href="producto3.html"><img src="producto3.png" alt="PRODUCTO3" onerror="handleError()"></a></button>
             </div>
         </div>
     </div>
@@ -43,12 +58,12 @@
 
             <div class="contacto">
                 <h2>Contacto</h2>
-                <p><img src="maps_logo.png" width="20px"> Calle de las figuras, 99</p>
-                <p><img src="Gmail_Logo.png" width="20px"> SuperFunko.store@gmail.com</p>
+                <p><img src="maps_logo.png" width="20px" onerror="handleError()"> Calle de las figuras, 99</p>
+                <p><img src="Gmail_Logo.png" width="20px" onerror="handleError()"> SuperFunko.store@gmail.com</p>
             </div>
         </div>
         <div class="footer-logo">
-            <img src="logo.png" alt="Logo" width="200px">
+            <img src="logo.png" alt="Logo" width="200px" onerror="handleError()">
         </div>
     </footer>
 </body>

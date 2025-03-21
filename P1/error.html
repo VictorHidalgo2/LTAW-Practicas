@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Recurso no disponible</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8d7da;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            flex-direction: column; /* Asegura que todo esté centrado en columna */
+        }
+        .error-container {
+            display: flex;
+            align-items: center; /* Centra verticalmente los elementos dentro del contenedor */
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; /* Deja espacio entre el recuadro y el botón */
+        }
+        .error-text {
+            margin-left: 20px; /* Espacio entre la imagen y el texto */
+        }
+        h1 {
+            color: #721c24;
+        }
+        p {
+            color: #721c24;
+            font-size: 18px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #721c24;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #a94442;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const resource = params.get('resource') || 'desconocido';
+            document.getElementById('error-message').innerText = `El recurso solicitado (${resource}) no se encuentra disponible.`;
+        };
+    </script>
+</head>
+<body>
+    <div class="error-container">
+        <img src="error.gif" alt="Error" onerror="handleError()">
+        <div class="error-text">
+            <h1>¡Error!</h1>
+            <p id="error-message">El recurso solicitado no se encuentra disponible.</p>
+        </div>
+    </div>
+    <a href="front-end.html" class="back-button">Volver a la página principal</a>
+</body>
+</html>
+
