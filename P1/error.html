@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error - Recurso no disponible</title>
+    <link rel="icon" type="image/png" href="atencion.png" sizes="64x64">
     <style>
         body {
             display: flex;
@@ -46,14 +47,14 @@
             background-color: #a94442;
         }
     </style>
-    <script>
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const resource = params.get('resource') || 'desconocido';
-            document.getElementById('error-message').innerText = `El recurso solicitado (${resource}) no se encuentra disponible.`;
-        };
-    </script>
 </head>
+<script>
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const resource = params.get('resource') || 'desconocido';
+        document.getElementById('error-message').innerText = `El recurso solicitado (${resource}) no se encuentra disponible.`;
+    };
+</script>
 <body>
     <div class="error-container">
         <img src="error.gif" alt="Error" onerror="handleError()">

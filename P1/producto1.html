@@ -9,7 +9,18 @@
         <link rel="icon" type="image/png" href="loguito.png" sizes="64x64">
         <link rel="stylesheet" href="front-end.css"> 
     </head>
-
+    <script>
+        function handleError(event) {
+            let resource = event.target.src || event.target.href || 'desconocido';
+            window.location.href = 'error.html?resource=' + encodeURIComponent(resource);
+        }
+    
+        window.addEventListener('error', function(event) {
+            if (event.target.tagName === 'IMG' || event.target.tagName === 'LINK' || event.target.tagName === 'SCRIPT') {
+                handleError(event);
+            }
+        }, true);
+    </script>
     <body>
         <header>
             <img src="logo.png" width="600px">
