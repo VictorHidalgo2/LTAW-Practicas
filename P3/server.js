@@ -2,10 +2,9 @@ const socketServer = require('socket.io').Server;
 const http = require('http');
 const express = require('express');
 const fs = require('fs');
-const colors = require('colors');
 
 
-const PUERTO = 9090;
+const PUERTO = 8080;
 const CHAT_HTML = fs.readFileSync('userChat.html', 'utf-8');
 let clients = []
 const app = express();

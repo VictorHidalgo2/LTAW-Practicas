@@ -8,7 +8,6 @@ usersListDiv = document.getElementById("usersListDiv");
 let CHAT_DATABASE = {general:"<div class='invisibleDiv'></div>"}
 let STATE = "general"
 let USERS_LIST = []
-let SOUND = new Audio('publico/notification-sound.mp3');
 
 function getDate() {
     var date = new Date();
@@ -89,7 +88,6 @@ socket.on("message", (msg) => {
             }
         }
     }else{
-        SOUND.play();
         CHAT_DATABASE[msg[0]] += "<div class='messageClassDiv1'> <p class='chatTimeText'> <span class='userName'>"+ msg[1] +"</span> <span class='messDate'>"+getDate()+"</span>  </p> <p class='chatText' >"+ msg[2] +"</p> </div>"
     }
 

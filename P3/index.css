@@ -136,7 +136,6 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Nombre de usuario */
 .messageBox .username {
     font-weight: bold;
     display: block;
@@ -144,14 +143,12 @@ body {
     color: #90ee90;
 }
 
-/* Hora del mensaje */
 .messageBox .timestamp {
     font-size: 0.8rem;
     color: #cccccc;
     float: right;
 }
 
-/* Texto del mensaje */
 .messageBox .messageText {
     margin-top: 5px;
     font-size: 1rem;
