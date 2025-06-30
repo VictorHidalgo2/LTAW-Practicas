@@ -67,12 +67,6 @@ socket.on("connect", () => {
     socket.emit('connect_login', USERNAME);
 });
 
-/*
-socket.on("disconnect", ()=> {
-  socket.emit('connect_login', USERNAME);
-})
-*/
-
 socket.on("message", (msg) => {
     msg = JSON.parse(msg)
     new_message = ""
