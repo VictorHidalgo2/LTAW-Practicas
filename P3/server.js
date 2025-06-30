@@ -2,6 +2,7 @@ const socketServer = require('socket.io').Server;
 const http = require('http');
 const express = require('express');
 const fs = require('fs');
+const colors = require('colors');
 
 
 const PUERTO = 8080;
@@ -148,4 +149,4 @@ function showMesageData(msg, id){
         console.log("Message content: ".blue + "PRIVATE CONVERSATION")
     }
     console.log("________________________________________________".white)
-} 
+}

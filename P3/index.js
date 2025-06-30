@@ -1,5 +1,5 @@
 function login(){
- 
+
     USERNAME = document.getElementById("userName").value;
     var m = new XMLHttpRequest();
     m.open("POST", "/login", true);
