@@ -1,29 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div id="topBar">
-        <h2>Usuarios conectados</h2>
-        <div id="usersListDiv">
-            <!--REPLACEUSERS-->
-        </div>
+  <div id="contentDiv">
+    <!-- CHAT PRINCIPAL -->
+    <div class="mainDiv">
+      <div id="tittleConversation">
+        <p id="tittleConversationH1">CHAT WARS</p>
+      </div>
+      <div id="messagesDiv">
+        <!-- AQUÍ SE INYECTAN LOS MENSAJES -->
+      </div>
+      <div class="inputDiv">
+        <input type="text" id="inputInput" />
+        <button id="inputButton">▷</button>
+      </div>
     </div>
 
-    <div id="chatSection">
-        <div id="chatHeader">
-            <p id="chatTitle">MiniChat</p>
-        </div>
-        <div id="messagesDiv">
-            <!-- Mensajes -->
-        </div>
-        <div class="inputArea">
-            <input type="text" id="messageInput" />
-            <button id="sendButton">Enviar</button>
-        </div>
+    <!-- BARRA LATERAL DE USUARIOS -->
+    <div id="chatsDiv">
+      <h2 id="secondaryText">Usuarios conectados</h2>
+      <div id="usersListDiv">
+        <!-- REPLACEUSERS -->
+      </div>
     </div>
+  </div>
 
-    <footer id="footerText">
-        Has iniciado sesión como: <!--REPLACENAME-->
-    </footer>
+  <p id="footerText">
+    Has iniciado sesión como: <!-- REPLACENAME -->
+  </p>
 </body>
- 
+</html>
