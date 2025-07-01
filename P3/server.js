@@ -46,15 +46,7 @@ io.on('connect', (socket) => {
         io.emit("chatList", JSON.stringify(clients));
         const fechaActual = new Date();
         const hora = Number(fechaActual.getHours().toString().padStart(2, "0"));
-        hourMess = ""
-        if(hora > 6 && hora <= 13) {
-            hourMess = "Buenos Dias. "
-        }else if(hora > 13 &&hora <= 21){
-            hourMess = "Buenas Tardes. "
-        }else if(hora > 21 && hora <= 6){
-            hourMess = "Buenas Noches. "
-        }
-        socket.emit("message", JSON.stringify(["general", "server", hourMess + msg + ", bienvenido."]));
+        socket.emit("message", JSON.stringify(["general", "server", "Hola " + msg + ", bienvenido."]));
     });
 
     socket.on('disconnect', function(){
