@@ -86,7 +86,7 @@ function spetialCommands(comand, socket, name, channel){
     switch(comand){
         case "/help":
             socket.emit("message" ,JSON.stringify([channel ,"server","Comandos Disponibles: <br> - /list: Devuelve una lista con los usuarios conectados" + 
-            "<br> - /hello : Devuelve el saludo <br> - /date : Da la fecha actual "]))
+            "<br> - /hello : Devuelve el saludo <br> - /date : Devuelve la fecha actual "]))
             break;
 
         case "/list":
