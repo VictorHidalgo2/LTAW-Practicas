@@ -1,16 +1,35 @@
 {
-  "name": "chat-electron",
-  "version": "1.0.0",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "dependencies": {
-    "colors": "^1.4.0",
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2"
-  },
-  "devDependencies": {
-    "electron": "^29.0.0"
-  }
+    "name": "p4",
+    "version": "1.0.0",
+    "description": "P4 SERVER",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "postinstall": "electron-builder install-app-deps"
+    },
+    "author": "Álvaro Lumbreras",
+    "license": "ISC",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "express": "^4.19.2",
+        "ip": "^1.1.9",
+        "qrcode": "^1.5.3",
+        "socket.io": "^4.7.5"
+    },
+    "build": {
+        "appId": "mi-electron-app-1-id",
+        "linux": {
+            "target": [
+                "AppImage"
+            ],
+            "category": "Utility"
+        }
+    },
+    "devDependencies": {
+        "electron": "^24.8.8",
+        "electron-builder": "^24.4.0"
+    }
 }

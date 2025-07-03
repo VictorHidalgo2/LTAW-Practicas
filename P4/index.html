@@ -1,25 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Servidor de Chat</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    #log { background:#f5f5f5; padding:10px; height:200px; overflow:auto; border:1px solid #ccc; }
-    button { padding:10px 20px; }
-  </style>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/ico" href="/icon.png"/> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT WARS</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="index.js" defer></script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <h1>Servidor de Chat en Electron</h1>
-  <p><strong>NodeJS:</strong> <span id="nodeVer"></span></p>
-  <p><strong>Electron:</strong> <span id="electronVer"></span></p>
-  <p><strong>Chrome:</strong> <span id="chromeVer"></span></p>
-  <p><strong>URL clientes:</strong> <span id="url"></span></p>
-
-  <h2>Mensajes recibidos:</h2>
-  <div id="log"></div>
-
-  <button id="testButton">Enviar mensaje de prueba</button>
-  <script src="renderer.js"></script>
+    <div id="loginDiv">
+        <p>Inserta un nombre de usuario:</p>
+        <input type="text" id="userName" placeholder="User"/>
+        <button onclick="login()" id="userButton">LOGIN</button>
+    </div>
+    <p id="feedbackText"></p>
 </body>
 </html>

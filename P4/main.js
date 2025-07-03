@@ -1,43 +1,177 @@
-const { app, BrowserWindow } = require('electron');
-const os = require('os');
-const path = require('path');
-app.disableHardwareAcceleration(); 
+const socketServer = require('socket.io').Server;
+const http = require('http');
+const express = require('express');
+const fs = require('fs');
+const ip = require('ip');
+const colors = require('colors');
 
-// Arranca el servidor Express + Socket.IO
-require('./server');
 
-function getLocalIP() {
-  const ifaces = os.networkInterfaces();
-  for (const name in ifaces) {
-    for (const iface of ifaces[name]) {
-      if (iface.family === 'IPv4' && !iface.internal) {
-        return iface.address;
-      }
-    }
-  }
-  return 'localhost';
-}
+const electron = require('electron');
+let win = null;
+electron.app.on('ready', () => {
+    const PUERTO = 8080;
+    const CHAT_HTML = fs.readFileSync('userChat.html', 'utf-8');
+    let clients = []
+    const app = express();
 
-function createWindow() {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'renderer.js'),
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  });
+    app.use('/', express.static(__dirname));
 
-  win.loadFile('index.html');
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.send('env-info', {
-      node: process.versions.node,
-      chrome: process.versions.chrome,
-      electron: process.versions.electron,
-      url: `http://${getLocalIP()}:8080`
+    const server = http.Server(app);
+    const io = new socketServer(server);
+
+    app.post('/login', (req,res) => {
+        let userName = ""
+        let data = '';
+        req.on('data', chunk => {
+            data += chunk;
+        });
+        req.on('end', () => {
+            const datos = new URLSearchParams(data);
+            userName = datos.get('userName');
+            const clientsName = clients.map(objeto => objeto.name);
+            if(clientsName.includes(userName)){
+                res.status(404).send("Nombre de usuario empleado por otra persona");
+            }else if(userName.toLowerCase() == "server" ){ 
+                res.status(404).send("Nombre de usuario no disponible");
+            }else if(userName == ""){
+                res.status(404).send("Necesitas un nombre de usuario, este campo no puede estar vacio");
+            }else{
+                res.send(CHAT_HTML);
+            }
+        });
     });
-  });
-}
 
-app.whenReady().then(createWindow);
+    io.on('connect', (socket) => {
+        socket.on("connect_login", (msg) => {
+            console.log('Nueva conexión: '.green + socket.id.blue + ": " + msg.yellow)
+            clients.push({name: msg, id: socket.id})
+            socket.broadcast.emit("message",JSON.stringify(["general","server", "Se ha conectado: " + msg]));
+            io.emit("chatList", JSON.stringify(clients));
+            const fechaActual = new Date();
+            const hora = Number(fechaActual.getHours().toString().padStart(2, "0"));
+            socket.emit("message", JSON.stringify(["general", "server", "Hola " + msg + ", bienvenido."]));
+            win.webContents.send('usersCon' ,clients)
+            win.webContents.send('genChat' , ["general","server", "Se ha conectado: " + msg])
+        });
+
+        socket.on('disconnect', function(){
+            console.log('CONEXIÓN TERMINADA CON: '.red + socket.id.yellow);
+            filtered_clients = []
+            for(let i = 0; i < clients.length; i++){
+                if(clients[i].id == socket.id){
+                    win.webContents.send('genChat' , ["general","server", "Se ha desconectado: " + clients[i].name])
+                    io.emit("message", JSON.stringify([ "general", "server" ,"Se ha desconectado  " + clients[i].name ,"disconect" ,socket.id]));
+                }else{
+                    filtered_clients.push(clients[i])
+                }
+            }
+            clients = filtered_clients
+            io.emit("chatList", JSON.stringify(clients));
+            win.webContents.send('usersCon' ,clients)
+        });
+
+        socket.on("message", (msg) => {
+            showMesageData(msg, socket.id)
+            if(msg[2][0] == "/"){
+                spetialCommands(msg[2], socket, msg[1], msg[0])
+            }else{
+                if(msg[0] == "general"){
+                    socket.broadcast.emit("message", JSON.stringify(msg));
+                    win.webContents.send('genChat' , msg)
+                }else{
+                    destinatary = msg[0]
+                    msg[0] = socket.id
+                    io.to(destinatary).emit('message', JSON.stringify(msg));
+                }
+            }
+        });
+    });
+
+    server.listen(PUERTO);
+    console.log("Escuchando en puerto: ".yellow + String(PUERTO).blue);
+
+    function spetialCommands(comand, socket, name, channel){
+        switch(comand){
+            case "/help":
+                socket.emit("message" ,JSON.stringify([channel ,"server","Comandos Disponibles: <br> - /list: Devuelve una lista con los usuarios conectados" + 
+                "<br> - /hello : Devuelve el saludo <br> - /date : Da la fecha actual "]))
+                break;
+
+            case "/list":
+                let response = "Lista de usuarios conectados: "
+                if(clients.length <= 1){
+                    response = "No hay nadie más conectado."
+                }else{
+                    for(let i = 0; i < clients.length; i++){
+                        if(socket.id != clients[i].id){
+                            response += "<br> - " + clients[i].name
+                        }
+                    }
+                }
+                socket.emit("message" ,JSON.stringify([channel ,"server",response]))
+                break;
+
+            case "/hello":
+                socket.emit("message", JSON.stringify([channel , "server", "Hola " + name + " !"]))
+                break;
+
+            case "/date":
+                socket.emit("message", JSON.stringify([channel , "server", getDate()]))
+                break;
+
+            default:
+                socket.emit("message" , JSON.stringify([channel ,"server","Comando no reconocido, escribe /help para conocer todas las opciones"]))
+                break;
+        }    
+    }
+
+    function getDate(){
+        const fechaActual = new Date();
+        const dia = fechaActual.getDate().toString().padStart(2, '0');
+        const mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fechaActual.getFullYear();
+        const hora = fechaActual.getHours().toString().padStart(2, '0');
+        const minutos = fechaActual.getMinutes().toString().padStart(2, '0');
+        const segundos = fechaActual.getSeconds().toString().padStart(2, '0');
+
+        const fechaHora = `Es el dia: ${dia}/${mes}/${anio} , a las ${hora}:${minutos} y ${segundos} segundos`;
+        return fechaHora
+    }
+
+    function showMesageData(msg, id){
+        console.log("________________________________________________".white)
+        console.log("Mensaje recibido: ".magenta)
+        console.log("origin id: ".blue + id.yellow)
+        console.log("Destination id: ".blue + msg[0].yellow)
+        if(msg[0] == "general"){
+            console.log("Message content: ".blue + msg[2].yellow)
+        }else{
+            console.log("Message content: ".blue + "PRIVATE CONVERSATION")
+        }
+        console.log("________________________________________________".white)
+    }
+    win = new electron.BrowserWindow({
+        width: 1200,
+        height:750,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        }
+    });
+
+    win.on('ready-to-show', () => {
+        win.webContents.send('userCon', clients)
+
+        const url = "http://" + ip.address() + ":" + PUERTO;
+        win.webContents.send('conectionInformation' , JSON.stringify([ip.address(), PUERTO]))
+    })
+
+    electron.ipcMain.handle('serverMess', (event,msg) => {
+        io.emit("message", JSON.stringify([ "general", "server", msg]));
+    })
+
+    win.setMenuBarVisibility(false)
+    win.loadFile("renderer.html")
+
+});
+

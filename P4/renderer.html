@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHAT WARS SERVER</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="renderer.css" defer> 
+    <script  src="renderer.js" defer></script>
+    <script  src="renderer_UI.js" defer></script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self';" />
+</head>
+<body>
+    
+    <div id="infoDIV">
+        <div id="infoDIVDIV">
+            <h3 class="infoTextTittle">Versiones</h3>
+            <p class="infoText">Versión de node: <p class="infoTextGreen" id="nodeText"><!--REPLACE_NODE_VERSION--></p></p>
+            <p class="infoText">Versión de chrome: <p class="infoTextGreen" id="chromeText"><!--REPLACE_NODE_CHROME--></p></p>
+            <p class="infoText">Versión de electron: <p class="infoTextGreen" id="electronText"><!--REPLACE_NODE_ELECTRON--></p></p>
+            <p class="infoText">Versión del server: <p class="infoTextGreen">1.0.0</p></p>
+        </div>
+    </div>
+
+    <div id="chatInfoDiv">
+        <div id="smallChatDiv">
+            <div id="tittleConversation">
+                <p id="tittleConversationH1">General</p>
+            </div>
+            <div id="smallChatDivDiv">
+                <div class="invisibleDiv"></div>
+            </div>
+            <div id="inputDiv">
+                <input type="text" id="inputTextServer"/>
+                <button id="sendButton"> ▷ </button>
+                <input type="button" value="Test" id="testButton"/>
+            </div>
+        </div>
+        <div id="infoChatDiv">
+            <p>Usuarios conectados: <p id="usersConNum"> </p>  </p>
+            <p>Lista de usuarios conectados: <p id="usersConList"></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+@font-face {
+    font-family: "soloist1";
+    src: url("soloist1.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("chat_background.jpeg") center center / cover no-repeat;
+  }
+  
+  #loginDiv {
+    background-color: #cac5c5d7;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 400px;
+    padding: 30px;
+    font-size: 20px;
+    font-family: "soloist1";
+  }
+  
+  #loginDiv p {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+  
+  #userName {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 20px);
+    padding: 15px;
+    font-size: 18px;
+  }
+  
+  #userButton {
+    background-color: #2b6ecf;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: calc(100% - 20px);
+    padding: 15px;
+    font-size: 18px;
+    font-family: "soloist1";
+  }
+  
+  #feedbackText {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  
+  @keyframes aparecer-desaparecer {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+  }  
