@@ -31,7 +31,7 @@ document.addEventListener("keydown", function(event){
 
 let testButton = document.getElementById('testButton');
 testButton.onclick = () => {
-    sendMessage("Este es un mensaje de prueba. :)")
+    sendMessage("Este es un mensaje de prueba")
 };
 
 let sendButton = document.getElementById('sendButton');

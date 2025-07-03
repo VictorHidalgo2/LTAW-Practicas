@@ -1,31 +1,80 @@
-const electron = require('electron');
-const ip = require('ip');
+// renderer.js
+const { ipcRenderer } = require('electron');
 
+// 1) Mostrar versiones y solicitar URL al arrancar
+window.addEventListener('DOMContentLoaded', () => {
+ document.getElementById('nodeText').textContent = process.versions.node;
+ document.getElementById('chromeText').textContent = process.versions.chrome;
+ document.getElementById('electronText').textContent = process.versions.electron;
 
-electron.ipcRenderer.on('usersCon', (event, message) => {
-    document.getElementById("usersConNum").innerHTML = message.length;
-    let userList = document.getElementById("usersConList")
-    userList.innerHTML = ""
-    for (let i = 0; i < message.length; i++){
-        userList.innerHTML += "<div class='conectedDiv' data-username='" + message[i].name + "'></div>";
-          }
-})
+ ipcRenderer.send('requestConnectionInfo');
+});
 
+// 2) Funciones auxiliares
+function getDate() {
+ const d = new Date();
+ const hh = d.getHours().toString().padStart(2, '0');
+ const mm = d.getMinutes().toString().padStart(2, '0');
+ return `${hh}:${mm}`;
+}
 
-electron.ipcRenderer.on('genChat', (event, message) => {
-    typeText = 1
-    if(message[1] == "server"){typeText = 2}
-    showText = "<div class='messageClassDiv"+ typeText +"'> <p class='chatTimeText'> <span class='userName'> " + message[1] + "</span> <span class='messDate'>"+ getDate() +"</span>  </p> <p class='chatText' >"+ message[2] +"</p> </div>"
-    document.getElementById("smallChatDivDiv").innerHTML += showText;
-    let scroll = document.getElementById('smallChatDivDiv')
-    scroll.scrollTop = scroll.scrollHeight;
-})
+function appendChat(author, text) {
+ const type = author === 'server' ? 2 : 1;
+ const div = document.createElement('div');
+ div.className = `messageClassDiv${type}`;
+ div.innerHTML = `
+ <p class="chatTimeText">
+ <span class="userName">${author}</span>
+ <span class="messDate">${getDate()}</span>
+ </p>
+ <p class="chatText">${text}</p>
+ `;
+ const box = document.getElementById('smallChatDivDiv');
+ box.appendChild(div);
+ box.scrollTop = box.scrollHeight;
+}
 
+function sendMessage(message) {
+ appendChat('server', message);
+ ipcRenderer.invoke('serverMess', message);
+}
 
-electron.ipcRenderer.on('conectionInformation', (event, message) => {
-    message = JSON.parse(message)
-    document.getElementById("replaceURL").innerHTML = "http://" + message[0] + ":" +message[1]
-    document.getElementById("nodeText").innerHTML = process.versions.node
-    document.getElementById("chromeText").innerHTML = process.versions.chrome
-    document.getElementById("electronText").innerHTML = process.versions.electron
-})
+function sendComplexMessage() {
+ const input = document.getElementById('inputTextServer');
+ const txt = input.value.trim();
+ if (!txt) return;
+ sendMessage(txt);
+ input.value = '';
+}
+
+// 3) Listeners de teclado y botones
+document.addEventListener('keydown', e => {
+ if (e.key === 'Enter') sendComplexMessage();
+});
+document.getElementById('sendButton').addEventListener('click', sendComplexMessage);
+document.getElementById('testButton').addEventListener('click', () => {
+ sendMessage('Este es un mensaje de prueba. :)');
+});
+
+// 4) Canales IPC entrantes
+ipcRenderer.on('usersCon', (e, clients) => {
+ const num = document.getElementById('usersConNum');
+ const list = document.getElementById('usersConList');
+ num.textContent = clients.length;
+ list.innerHTML = '';
+ clients.forEach(u => {
+ const d = document.createElement('div');
+ d.className = 'conectedDiv';
+ d.dataset.username = u.name;
+ list.appendChild(d);
+ });
+});
+
+ipcRenderer.on('genChat', (e, [channel, author, msg]) => {
+ appendChat(author, msg);
+});
+
+ipcRenderer.on('conectionInformation', (e, raw) => {
+ const [host, port] = JSON.parse(raw);
+ document.getElementById('replaceURL').textContent = `http://${host}:${port}`;
+});
